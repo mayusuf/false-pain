@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            False Pain :: Number Rearranging
+        </title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                margin-top: 20px;
+            }
+            .box{
+                float: left;
+                border: 1px solid activeborder;
+                height: 40px;
+                width: 40px;
+                background-color: #8AF1E4;
+                margin-left: 5px;
+                margin-top: 10px;
+                text-align: center;
+
+            }
+            
+        </style>
+
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="row col-md-12 col-sm-12 col-xm-12">
+                <h2>False Pain is a number rearranging game for children. It may be ascending  or descending order</h2>
+            </div>
+            
+            <div class="row col-md-12 col-sm-12 col-xm-12">
+                <div id="number_arrange" ondrop="drop(event)">
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var random_number = [];
+            var box_string = '';
+
+            function dragStart(event) {
+                event.dataTransfer.setData("Text", event.target.id);
+
+            }
+
+            function dragging(event) {
+
+            }
+
+            function drop(event) {
+
+                event.preventDefault();
+
+                dragged = event.dataTransfer.getData("Text");
+                //alert(drag_over);
+                drag_over = event.target.id;
+
+               
+                var temp = document.getElementById(drag_over).innerHTML;
+                var temp_id = drag_over;
+
+
+                document.getElementById(drag_over).innerHTML = document.getElementById(dragged).innerHTML;
+                document.getElementById(dragged).innerHTML = temp;
+
+
+                var dragged_id = "small_box" + document.getElementById(drag_over).innerHTML;
+                var over_id = "small_box" + temp;
+                
+                
+                
+                document.getElementById(drag_over).setAttribute("id","dragover");
+                
+                document.getElementById(dragged).setAttribute("id", "dragged");
+                
+                document.getElementById("dragover").setAttribute("id",dragged_id);
+                
+                document.getElementById("dragged").setAttribute("id", over_id);
+            }
+
+
+            function allowDrop(event, id) {
+                event.preventDefault();
+                //document.getElementById(id).style.margin = "10px 0 0 50px";
+            }
+
+            for (var i = 0; i < 100; i++) {
+
+                var gen_num = Math.floor((Math.random() * 100) + 1);
+
+                do {
+                    //check is it already generated
+                    var is_it_exist = random_number.indexOf(gen_num);
+
+                    if (is_it_exist >= 0) {
+                        //if already exist again try to generate new one
+                        gen_num = Math.floor((Math.random() * 100) + 1);
+
+                    }
+                    else {
+                        random_number.push(gen_num);
+                        is_it_exist = -2;
+                    }
+                }
+                while (is_it_exist > -1);
+
+                box_string += '<div class="box" id ="small_box' + random_number[i] + '" ondragover="allowDrop(event,this.id)"  ondragstart="dragStart(event)"   draggable="true">' + random_number[i] + '</div>';
+
+            }
+
+            document.getElementById('number_arrange').innerHTML = box_string;
+
+
+
+        </script>
+    </body>
+</html>
